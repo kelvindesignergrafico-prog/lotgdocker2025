@@ -1,0 +1,35 @@
+version: "3"
+services:
+
+  lotgd-web:
+    image: kizaing/lotgd-web
+    ports:
+      - "4040:80"
+      - "8080:80"
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./lotgd:/var/www/lotgd
+    depends_on:
+      - lotgd-php
+      - lotgd-db
+    links:
+      - lotgd-php
+      - lotgd-db
+
+  lotgd-php:
+    image: kizaing/lotgd-php
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./lotgd:/var/www/lotgd
+
+  lotgd-db:
+    image: kizaing/lotgd-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=lotgd
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
